@@ -7,6 +7,13 @@ module.exports = {
       db.registerUser(email, hash, firstName, lastName, preferredName)
         .then(() => {
           //put the user on session
+          req.session.user = {
+            email,
+            firstName,
+            lastName,
+            preferredName
+          };
+          console.log(req.session.user);
           res.status(200).json({
             email,
             firstName,

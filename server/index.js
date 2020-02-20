@@ -2,7 +2,11 @@ const express = require("express");
 const massive = require("massive");
 const session = require("express-session");
 const dotenv = require("dotenv");
-const {} = require("./controller/authController");
+const { register } = require("./controller/authController");
+const {
+  updateAnswers,
+  findMatch
+} = require("./controller/questionsController");
 dotenv.config();
 
 const app = express();
@@ -25,6 +29,8 @@ app.use(
   })
 );
 
-app.post("/auth/register");
+app.post("/auth/register", register);
+app.put("/api/questions", updateAnswers);
+app.get("/api/love", findMatch);
 
 app.listen(5050, () => console.log(`Listening on Port: 5050`));

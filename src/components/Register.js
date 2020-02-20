@@ -1,5 +1,8 @@
 import React from "react";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { updateEmail } from "../redux/reducer";
 
 class Register extends React.Component {
   constructor() {
@@ -9,7 +12,8 @@ class Register extends React.Component {
       password: "",
       firstName: "",
       lastName: "",
-      preferredName: ""
+      preferredName: "",
+      shouldRedirect: false
     };
   }
 
@@ -20,10 +24,16 @@ class Register extends React.Component {
   };
 
   handleClick = () => {
-    axios.post("/auth/register").then(response => {});
+    axios.post("/auth/register", { ...this.state }).then(response => {
+      this.props.updateEmail(response.data.email);
+      this.setState({ shouldRedirect: true });
+    });
   };
 
   render() {
+    if (this.state.shouldRedirect) {
+      return <Redirect to="/questions" />;
+    }
     return (
       <div>
         <input onChange={this.handleChange} name="email" placeholder="Email" />
@@ -54,4 +64,4 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default connect(undefined, { updateEmail })(Register);
